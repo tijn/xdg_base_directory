@@ -1,6 +1,6 @@
 # xdg_base_directory
 
-TODO: Write a description here
+An implementation of the XDG Base Directory specs in Crystal-lang
 
 ## Installation
 
