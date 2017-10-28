@@ -2,6 +2,8 @@ require "./xdg_base_directory"
 
 if ARGV.empty?
   puts "Usage: xdg-dirs [PROGRAM-NAME]"
+  puts
+  puts "Outputs the directories to be used for configuration and "
   exit
 end
 
