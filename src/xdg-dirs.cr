@@ -1,5 +1,10 @@
 require "./xdg_base_directory"
 
+if ARGV.empty?
+  puts "Usage: xdg-dirs [PROGRAM-NAME]"
+  exit
+end
+
 dirs = XdgBaseDirectory::XdgDirs.new(ARGV.first)
 
 puts "config:"
