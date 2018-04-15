@@ -3,12 +3,16 @@ module XdgBaseDirectory
     def initialize(@path : String)
     end
 
+    def to_dir
+      Dir.open(@path)
+    end
+
     def to_s(io)
       io << @path
     end
 
     def open
-      Dir.open(@path)
+      to_dir
     end
 
     def write_file(filename, content, perm = File::DEFAULT_CREATE_MODE, encoding = nil, invalid = nil)
@@ -37,7 +41,7 @@ module XdgBaseDirectory
     end
 
     # If, when attempting to write a file, the destination directory is non-existant an attempt should be made to create it with permission 0700. If the destination directory exists already the permissions should not be changed. The application should be prepared to handle the case where the file could not be written, either because the directory was non-existant and could not be created, or for any other reason. In such case it may chose to present an error message to the user.
-    def mkdir_p(path)
+    def mkdir_p(dir)
       Dir.mkdir_p(dir, Oo700)
     end
   end

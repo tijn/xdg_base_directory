@@ -14,7 +14,7 @@ module XdgBaseDirectory
     # define a method to return the specified `XdgDir` for this application.
     macro def_xdg_dir(name, method_name = "")
       def {{method_name}}
-        XdgDir.new("#{Lookup.xdg_{{name}}}/#{subdir}")
+        XdgDir.new("#{Lookup.xdg_{{name}}}/#{@subdir}")
       end
     end
 
