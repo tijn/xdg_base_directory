@@ -1,9 +1,9 @@
 name: xdg_base_directory
-version: 1.0.0
+version: 1.0.1
 
 authors:
   - Tijn Schuurmans <tijn@tijnschuurmans.nl>
 
-crystal: 0.22.0
+crystal: 0.27.2
 
 license: GPL

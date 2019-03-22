@@ -46,10 +46,10 @@ module XdgBaseDirectory
         STDERR.puts "warning: $XDG_RUNTIME_DIR is not set; using #{fallback} instead."
         fallback
       end
-      stat = File::Stat.new(dir)
-      raise "runtime dir must be a directory" unless stat.directory?
-      raise "runtime dir must be owned by user" unless stat.uid == user_id
-      raise "user must be the only one with read and write access to runtime dir" unless stat.perm == 0o700
+      info = File.info(dir)
+      raise "runtime dir must be a directory" unless info.directory?
+      raise "runtime dir must be owned by user" unless info.owner == user_id
+      raise "user must be the only one with read and write access to runtime dir" unless info.permissions == File::Permissions::OwnerAll
       dir
     end
 
@@ -58,7 +58,7 @@ module XdgBaseDirectory
       ENV.fetch("HOME")
     end
 
-    private def user_id
+    private def self.user_id
       # FIXME: there must be a better way to do this but there is no Process::uid as far as I can see
       `id -u`.to_i
     end
