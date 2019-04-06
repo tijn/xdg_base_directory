@@ -41,7 +41,7 @@ module XdgBaseDirectory
       # $XDG_RUNTIME_DIR defines the base directory relative to which user-specific non-essential runtime files and other file objects (such as sockets, named pipes, ...) should be stored. The directory MUST be owned by the user, and he MUST be the only one having read and write access to it. Its Unix access mode MUST be 0700.
       # If $XDG_RUNTIME_DIR is not set applications should fall back to a replacement directory with similar capabilities and print a warning message. Applications should use this directory for communication and synchronization purposes and should not place larger files in it, since it might reside in runtime memory and cannot necessarily be swapped out to disk.
       dir = dir_from_env("XDG_RUNTIME_DIR") do
-        fallback = "/tmp/#{ENV["USERNAME"]}"
+        fallback = "/tmp/#{username}"
         Dir.mkdir_p(fallback, 0o700)
         STDERR.puts "warning: $XDG_RUNTIME_DIR is not set; using #{fallback} instead."
         fallback
@@ -56,6 +56,10 @@ module XdgBaseDirectory
     # The user's home directory
     def self.home
       ENV.fetch("HOME")
+    end
+
+    private def self.username
+      ENV.fetch("USER") { ENV.fetch("USERMAME") { ENV["LOGNAME"] } }
     end
 
     private def self.user_id
