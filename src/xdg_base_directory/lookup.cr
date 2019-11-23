@@ -109,7 +109,7 @@ module XdgBaseDirectory
       path.starts_with?('/')
     end
 
-    private def self.relative_path?(path : Sting)
+    private def self.relative_path?(path : String)
       !absolute_path?(path)
     end
   end
