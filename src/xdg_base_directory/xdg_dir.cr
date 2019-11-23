@@ -47,6 +47,7 @@ module XdgBaseDirectory
     # If, when attempting to write a file, the destination directory is non-existant an attempt should be made to create it with permission 0700. If the destination directory exists already the permissions should not be changed. The application should be prepared to handle the case where the file could not be written, either because the directory was non-existant and could not be created, or for any other reason. In such case it may chose to present an error message to the user.
     private def mkdir_p(dir)
       Dir.mkdir_p(dir, 0o700)
+      self
     end
   end
 end

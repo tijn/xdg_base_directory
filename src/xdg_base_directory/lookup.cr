@@ -99,16 +99,17 @@ module XdgBaseDirectory
       end
     end
 
+    # Returns an array of "valid" xdg directories using a given environment variable.
     # All paths set in these environment variables must be absolute. If an implementation encounters a relative path in any of these variables it should consider the path invalid and ignore it.
-    private def self.valid_dirs(variable)
+    private def self.valid_dirs(variable : String)
       variable.split(':').reject { |path| relative_path?(path) }
     end
 
-    private def self.absolute_path?(path)
+    private def self.absolute_path?(path : String)
       path.starts_with?('/')
     end
 
-    private def self.relative_path?(path)
+    private def self.relative_path?(path : Sting)
       !absolute_path?(path)
     end
   end
