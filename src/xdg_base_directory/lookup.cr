@@ -42,10 +42,10 @@ module XdgBaseDirectory
       # If $XDG_RUNTIME_DIR is not set applications should fall back to a replacement directory with similar capabilities and print a warning message. Applications should use this directory for communication and synchronization purposes and should not place larger files in it, since it might reside in runtime memory and cannot necessarily be swapped out to disk.
       dir = dir_from_env("XDG_RUNTIME_DIR") do
         fallback = "/tmp/#{username}"
-        Dir.mkdir_p(fallback, 0o700)
         STDERR.puts "warning: $XDG_RUNTIME_DIR is not set; using #{fallback} instead."
         fallback
       end
+      Dir.mkdir_p(dir, 0o700)
       info = File.info(dir)
       raise "runtime dir must be a directory" unless info.directory?
       raise "runtime dir must be owned by user" unless info.owner == user_id
