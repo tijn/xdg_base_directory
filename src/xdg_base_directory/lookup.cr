@@ -55,6 +55,11 @@ module XdgBaseDirectory
       dir
     end
 
+    # $XDG_STATE_HOME defines the base directory relative to which user-specific state files should be stored. If $XDG_STATE_HOME is either not set or empty, a default equal to $HOME/.local/state should be used.
+    def self.xdg_state_home
+      dir_from_env("XDG_DATA_HOME") { "#{home}/.local/state" }
+    end
+
     # The user's home directory
     def self.home
       ENV.fetch("HOME")

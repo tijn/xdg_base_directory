@@ -17,9 +17,16 @@ dependencies:
 ```crystal
 require "xdg_base_directory"
 
-xdg_dirs = XdgBaseDirectory::XdgDirs.new("my-awesome-app")
+xdg_dirs = XdgBaseDirectory.app_directories("my-awesome-app")
+
 settings = xdg_dirs.config.read_file("settings.ini")
 xdg_dirs.config.write_file("settings.ini.backup", setttings)
+
+# open the cache directory
+xdg_dirs.cache.to_dir # returns a Dir instance
+
+# open the runtime directory
+xdg_dirs.runtime_dir.to_dir # returns a Dir instance
 ```
 
 ## Contributing

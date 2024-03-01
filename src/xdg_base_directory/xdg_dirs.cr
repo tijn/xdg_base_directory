@@ -38,6 +38,9 @@ module XdgBaseDirectory
     # A directory in which user-specific runtime files and other file objects should be placed.
     def_xdg_dir runtime_dir, runtime_dir
 
+    # state data that should persist between (application) restarts, but that is not important or portable enough to the user that it should be stored in data_home
+    def_xdg_dir state_home, state
+
     # xdg_config_home + xdg_config_dirs as `XdgDir`s
     #
     # The order of base directories denotes their importance; the first directory listed is the most important. When the same information is defined in multiple places the information defined relative to the more important base directory takes precedent. The base directory defined by $XDG_DATA_HOME is considered more important than any of the base directories defined by $XDG_DATA_DIRS. The base directory defined by $XDG_CONFIG_HOME is considered more important than any of the base directories defined by $XDG_CONFIG_DIRS.

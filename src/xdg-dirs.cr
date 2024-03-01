@@ -35,3 +35,7 @@ begin
 rescue error
   puts error
 end
+
+puts
+puts "state:"
+puts dir_description(dirs.state)
