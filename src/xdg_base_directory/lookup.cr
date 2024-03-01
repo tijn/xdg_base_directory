@@ -38,18 +38,20 @@ module XdgBaseDirectory
 
     # A single base directory relative to which user-specific runtime files and other file objects should be placed.
     def self.xdg_runtime_dir
+      fallbacks = ["/run/user/#{username}", "/tmp/#{username}", "#{home}/tmp/run"]
       # $XDG_RUNTIME_DIR defines the base directory relative to which user-specific non-essential runtime files and other file objects (such as sockets, named pipes, ...) should be stored. The directory MUST be owned by the user, and he MUST be the only one having read and write access to it. Its Unix access mode MUST be 0700.
       # If $XDG_RUNTIME_DIR is not set applications should fall back to a replacement directory with similar capabilities and print a warning message. Applications should use this directory for communication and synchronization purposes and should not place larger files in it, since it might reside in runtime memory and cannot necessarily be swapped out to disk.
       dir = dir_from_env("XDG_RUNTIME_DIR") do
-        fallback = "/tmp/#{username}"
-        Dir.mkdir_p(fallback, 0o700)
-        STDERR.puts "warning: $XDG_RUNTIME_DIR is not set; using #{fallback} instead."
-        fallback
+        fallbacks.find do |fallback|
+          STDERR.puts "warning: $XDG_RUNTIME_DIR is not set; trying #{fallback} instead."
+          Dir.mkdir_p(fallback, 0o700) && fallback
+        end
       end
+      raise "dir is nil" if dir.nil? # this will only be raised if mkdir_p fails
       info = File.info(dir)
-      raise "runtime dir must be a directory" unless info.directory?
-      raise "runtime dir must be owned by user" unless info.owner == user_id
-      raise "user must be the only one with read and write access to runtime dir" unless info.permissions == File::Permissions::OwnerAll
+      raise "runtime dir `#{dir}` must be a directory" unless info.directory?
+      raise "runtime dir `#{dir}` must be owned by user #{user_id} (#{info.owner_id})" unless info.owner_id.to_i == user_id
+      raise "user must be the only one with read and write access to runtime dir `#{dir}`" unless info.permissions == File::Permissions::OwnerAll
       dir
     end
 
@@ -63,8 +65,7 @@ module XdgBaseDirectory
     end
 
     private def self.user_id
-      # FIXME: there must be a better way to do this but there is no Process::uid as far as I can see
-      `id -u`.to_i
+      LibC.getuid
     end
 
     # Fetch XDG-directory variable from `ENV`.
@@ -113,4 +114,8 @@ module XdgBaseDirectory
       !absolute_path?(path)
     end
   end
+end
+
+lib LibC
+  fun getuid : UidT
 end
