@@ -7,15 +7,31 @@ if ARGV.empty?
   exit
 end
 
-dirs = XdgBaseDirectory::XdgDirs.new(ARGV.first)
+def dir_description(dir)
+  "#{dir} #{dir.exists? ? "*" : ""}"
+end
+
+dirs = XdgBaseDirectory.app_directories(ARGV.first)
 
 puts "config:"
 dirs.all_config_dirs.each do |dir|
-  puts "#{dir} #{dir.exists? ? "*" : ""}"
+  puts dir_description(dir)
 end
 
 puts
 puts "data:"
 dirs.all_data_dirs.each do |dir|
-  puts "#{dir} #{dir.exists? ? "*" : ""}"
+  puts dir_description(dir)
+end
+
+puts
+puts "cache:"
+puts dir_description(dirs.cache)
+
+puts
+puts "runtime_dir:"
+begin
+  puts dir_description(dirs.runtime_dir)
+rescue error
+  puts error
 end
