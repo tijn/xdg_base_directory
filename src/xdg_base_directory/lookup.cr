@@ -85,7 +85,7 @@ module XdgBaseDirectory
     # Fetch XDG-directory variable from `ENV`.
     # If the value has not been set or if it is invalid the default will be used.
     private def self.dir_from_env(name, default)
-      fetch_xdg_dir(name) { default }
+      dir_from_env(name) { default }
     end
 
     # Fetch list of XDG-directory paths from ENV variable.
