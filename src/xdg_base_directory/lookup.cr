@@ -66,7 +66,7 @@ module XdgBaseDirectory
     end
 
     private def self.username
-      ENV.fetch("USER") { ENV.fetch("USERMAME") { ENV["LOGNAME"] } }
+      ENV.fetch("USER") { ENV.fetch("USERNAME") { ENV["LOGNAME"] } }
     end
 
     private def self.user_id
